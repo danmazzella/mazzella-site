@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SimBot — Tools for Sim Racing & Streaming Communities</title>
+  <meta name="description" content="A directory of tools and apps for sim racing leagues and streaming communities. Discord bots, web apps, and Windows utilities." />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:        #0f0f0f;
+      --surface:   #1a1a1a;
+      --border:    #2e2e2e;
+      --text:      #f0f0f0;
+      --muted:     #888;
+      --blue:      #3b82f6;
+      --green:     #10b981;
+      --purple:    #8b5cf6;
+      --orange:    #f59e0b;
+      --red:       #ef4444;
+      --teal:      #06b6d4;
+      --yellow:    #eab308;
+      --pink:      #ec4899;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+    }
+
+    .nav-name {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    #hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero-text h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-text .tagline {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 640px;
+      margin: 0 auto 1.75rem;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid transparent;
+      transition: opacity 0.15s;
+    }
+
+    .pill:hover { opacity: 0.8; }
+
+    .pill-blue   { background: var(--blue);   color: #fff; }
+    .pill-ghost  { border-color: var(--border); color: var(--muted); background: transparent; }
+    .pill-ghost:hover { border-color: var(--muted); color: var(--text); opacity: 1; }
+
+    /* SECTION WRAPPER */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    section + section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-intro {
+      color: #c0c0c0;
+      font-size: 1rem;
+      max-width: 620px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .filter-btn:hover { color: var(--text); border-color: var(--muted); }
+    .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--card-accent);
+    }
+
+    .card-top {
+      height: 5px;
+      background: var(--card-accent);
+    }
+
+    .card-body {
+      padding: 1.25rem 1.25rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--card-accent);
+    }
+
+    .card-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--card-accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .card-link:hover { text-decoration: underline; }
+
+    /* CONTACT */
+    .contact-body {
+      color: #c0c0c0;
+      font-size: 1rem;
+      max-width: 540px;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      #hero { padding-top: 3.5rem; }
+      .hero-text h1 { font-size: 2rem; }
+      .hero-text .tagline { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-name" href="#hero">SimBot</a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-text">
+      <h1>Tools for sim racing &amp; streaming communities</h1>
+      <p class="tagline">A collection of Discord bots, web apps, and desktop utilities built to run racing leagues, automate streams, and keep your community organized.</p>
+      <div class="hero-links">
+        <a class="pill pill-blue" href="#tools">Browse the tools</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section id="tools">
+    <p class="section-label">The lineup</p>
+    <h2 class="section-title">Tools &amp; Apps</h2>
+    <p class="section-intro">
+      Everything below is live and ready to use. Pick a category or jump straight to whatever fits your community.
+    </p>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="discord">Discord Bots</button>
+      <button class="filter-btn" data-filter="web">Web Apps</button>
+      <button class="filter-btn" data-filter="desktop">Desktop Apps</button>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="card" data-category="discord" style="--card-accent: var(--blue)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Discord Bot</span>
+          <span class="card-name">SimBot for ACC</span>
+          <p class="card-desc">
+            A complete Assetto Corsa Competizione league management platform built into your Discord server.
+            Handles driver registration, team composition, server configuration, and lap time tracking via slash commands.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://acc.simbot.app" target="_blank" rel="noopener">
+            acc.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="discord" style="--card-accent: var(--teal)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Discord Bot</span>
+          <span class="card-name">SimBot for iRacing</span>
+          <p class="card-desc">
+            Manage your iRacing community without leaving Discord. Automates driver registration, race result
+            processing, standings calculations, and team management through the iRacing API.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://iracing-bot.simbot.app" target="_blank" rel="noopener">
+            iracing-bot.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="discord" style="--card-accent: var(--purple)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Discord Bot</span>
+          <span class="card-name">SimBot Streaming</span>
+          <p class="card-desc">
+            Automated stream announcements for your Discord server. Monitors registered Twitch and YouTube channels,
+            posts live alerts with no complicated setup, and eliminates duplicate notifications.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://streaming-bot.simbot.app" target="_blank" rel="noopener">
+            streaming-bot.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="discord" style="--card-accent: var(--orange)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Discord Bot</span>
+          <span class="card-name">SimBot Ticketing</span>
+          <p class="card-desc">
+            Structured ticket management for Discord communities. Creates private moderation breakout rooms,
+            generates permanent HTML transcripts, and preserves all attachments in a self-contained format
+            that survives channel deletion.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://ticketing-bot.simbot.app" target="_blank" rel="noopener">
+            ticketing-bot.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="web" style="--card-accent: var(--green)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Web App</span>
+          <span class="card-name">SimBot Rulebook</span>
+          <p class="card-desc">
+            A clean, readable website for hosting sim racing league rulebooks. Leagues can create
+            and manage multiple rulebooks, and members can browse the rules without digging through
+            documents or Discord pins.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://rulebook.simbot.app" target="_blank" rel="noopener">
+            rulebook.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="desktop" style="--card-accent: var(--yellow)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Windows App</span>
+          <span class="card-name">CtrlDeck</span>
+          <p class="card-desc">
+            A Stream Deck controller app that replaces the default Elgato and Ulanzi software.
+            Configure buttons and layouts with deep iRacing and Discord integrations built in.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://ctrldeck.simbot.app" target="_blank" rel="noopener">
+            ctrldeck.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="desktop" style="--card-accent: var(--pink)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Windows App</span>
+          <span class="card-name">SetupSync</span>
+          <p class="card-desc">
+            A Windows app for sim racers to sync personal car setups directly into Garage 61 team
+            setup folders, keeping your configurations current without manual file management.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://setupsync.simbot.app" target="_blank" rel="noopener">
+            setupsync.simbot.app &#8599;
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-category="web" style="--card-accent: var(--red)">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <span class="card-tag">Web App</span>
+          <span class="card-name">FinalPoint</span>
+          <p class="card-desc">
+            An F1 prediction game where you pick race outcomes and compete with friends. Features
+            a dashboard, custom leagues, and a picks system for Formula 1 fans.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a class="card-link" href="https://finalpoint.app" target="_blank" rel="noopener">
+            finalpoint.app &#8599;
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">Get in touch</p>
+    <h2 class="section-title">Contact</h2>
+    <p class="contact-body">
+      Have a question about one of these tools, found a bug, or want to suggest a feature? Reach out by email and I'll get back to you.
+    </p>
+    <div class="contact-links">
+      <a class="pill pill-blue" href="mailto:simbot.united@gmail.com">simbot.united@gmail.com</a>
+      <a class="pill pill-ghost" href="https://github.com/danmazzella" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 SimBot
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
