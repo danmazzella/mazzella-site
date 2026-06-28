@@ -237,6 +237,9 @@
     .card-footer {
       padding: 0.75rem 1.25rem;
       border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
     }
 
     .card-link {
@@ -250,6 +253,12 @@
     }
 
     .card-link:hover { text-decoration: underline; }
+
+    .card-link-secondary {
+      color: var(--muted);
+    }
+
+    .card-link-secondary:hover { color: var(--text); }
 
     /* CONTACT */
     .contact-body {
@@ -332,8 +341,11 @@
           </p>
         </div>
         <div class="card-footer">
-          <a class="card-link" href="https://acc.simbot.app" target="_blank" rel="noopener">
-            acc.simbot.app &#8599;
+          <a class="card-link" href="https://acc-bot.simbot.app" target="_blank" rel="noopener">
+            acc-bot.simbot.app &#8599;
+          </a>
+          <a class="card-link card-link-secondary" href="https://acc.simbot.app" target="_blank" rel="noopener">
+            View data &#8599;
           </a>
         </div>
       </div>
@@ -351,6 +363,9 @@
         <div class="card-footer">
           <a class="card-link" href="https://iracing-bot.simbot.app" target="_blank" rel="noopener">
             iracing-bot.simbot.app &#8599;
+          </a>
+          <a class="card-link card-link-secondary" href="https://iracing.simbot.app" target="_blank" rel="noopener">
+            View data &#8599;
           </a>
         </div>
       </div>
